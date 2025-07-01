@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/" class="brand-link">
+        <h1>🛍️ MiniShop</h1>
+      </a>
+    </div>
+    
+    <div class="nav-links">
+      <a routerLink="/" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        Catalogue
+      </a>
+      
+      <div class="auth-section" *ngIf="!isAuthenticated">
+        <a routerLink="/login" class="nav-link login-btn" routerLinkActive="active">
+          Se connecter
+        </a>
+      </div>
+      
+      <div class="auth-section" *ngIf="isAuthenticated">
+        <span class="welcome-text">Bonjour, {{ currentUser?.email }}</span>
+        <button class="logout-btn" (click)="logout()">
+          Déconnexion
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

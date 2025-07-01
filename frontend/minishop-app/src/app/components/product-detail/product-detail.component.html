@@ -1,0 +1,80 @@
+<div class="product-detail-container">
+  <!-- Loading state -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Chargement du produit...</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-message" *ngIf="error && !isLoading">
+    <p>{{ error }}</p>
+    <button class="back-btn" (click)="goBack()">Retour au catalogue</button>
+  </div>
+
+  <!-- Product detail -->
+  <div class="product-detail" *ngIf="!isLoading && !error && product">
+    <button class="back-btn" (click)="goBack()">← Retour au catalogue</button>
+    
+    <div class="product-content">
+      <div class="product-image-section">
+        <div class="product-image">
+          <img [src]="product.image_url" [alt]="product.name" (error)="onImageError($event)">
+        </div>
+      </div>
+
+      <div class="product-info-section">
+        <div class="product-header">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <div class="product-price">{{ formatPrice(product.price) }}</div>
+        </div>
+
+        <div class="product-description">
+          <h3>Description</h3>
+          <p>{{ product.description }}</p>
+        </div>
+
+        <div class="product-stock">
+          <span class="stock-label">Disponibilité:</span>
+          <span 
+            class="stock-value"
+            [class.in-stock]="product.stock_quantity > 5"
+            [class.low-stock]="product.stock_quantity > 0 && product.stock_quantity <= 5"
+            [class.out-of-stock]="product.stock_quantity === 0"
+          >
+            {{ product.stock_quantity > 0 ? product.stock_quantity + ' en stock' : 'Rupture de stock' }}
+          </span>
+        </div>
+
+        <div class="product-actions">
+          <button 
+            class="buy-btn"
+            (click)="buyProduct()"
+            [disabled]="product.stock_quantity === 0 || isProcessingPayment"
+            *ngIf="isAuthenticated"
+          >
+            {{ isProcessingPayment ? 'Redirection vers le paiement...' : 'Acheter maintenant' }}
+          </button>
+
+          <button 
+            class="login-btn"
+            (click)="goToLogin()"
+            *ngIf="!isAuthenticated"
+          >
+            Se connecter pour acheter
+          </button>
+        </div>
+
+        <div class="product-meta">
+          <div class="meta-item">
+            <span class="meta-label">Référence:</span>
+            <span class="meta-value">#{{ product.id }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Ajouté le:</span>
+            <span class="meta-value">{{ product.created_at | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

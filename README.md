@@ -69,6 +69,10 @@ Un projet de boutique en ligne complète avec backend Node.js/Express et fronten
 ![Page produit](screenshots/minishop%20page%20produit.png)
 *Page détail produit avec bouton d'achat et informations complètes*
 
+### Architecture base de données
+![Schéma base de données](screenshots/minishop-database-schema.png)
+*Schéma EER de la base de données - Architecture actuelle avec évolution future prévue*
+
 ### Backend (Node.js/Express)
 - ✅ API REST complète
 - ✅ Authentification JWT

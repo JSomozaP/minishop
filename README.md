@@ -12,6 +12,7 @@ Un projet de boutique en ligne complète avec backend Node.js/Express et fronten
 - ✅ **Authentification** : Inscription et connexion utilisateur
 - ✅ **Catalogue** : Affichage des produits avec images
 - ✅ **Navigation** : Routing entre pages (catalogue, détail, login)
+- ✅ **Responsive Design** : Interface testée sur mobile, tablette et desktop
 - ✅ **CORS** : Configuration Cross-Origin fonctionnelle
 
 ## 🚀 Démarrage rapide
@@ -70,9 +71,11 @@ chmod +x *.sh
 
 ### ✅ **Interface utilisateur complète**
 - **Catalogue responsive** : Grid moderne avec 6 produits de test
+- **Design adaptatif** : Interface optimisée pour desktop, tablette et mobile
 - **Navigation fluide** : Entre catalogue, détail produit et authentification  
 - **États de connexion** : Header adaptatif selon l'utilisateur connecté
 - **Design moderne** : Interface violet/blanc avec icônes et animations
+- **Responsive breakpoints** : Adaptation automatique selon la taille d'écran
 
 ### ✅ **Système d'authentification**
 - **Inscription/Connexion** : Formulaires réactifs avec validation
@@ -108,6 +111,20 @@ chmod +x *.sh
 ### Architecture base de données
 ![Schéma base de données](screenshots/minishop-database-schema.png)
 *Schéma EER de la base de données - Architecture actuelle avec évolution future prévue*
+
+### Version responsive - Écrans moyens
+![Homepage responsive](screenshots/Minishop%20responsive%20homepage.png)
+*Page d'accueil responsive - Affichage tablette/écran moyen*
+
+![Page produit responsive](screenshots/Minishop%20responsive%20product%20page.png)
+*Page détail produit responsive - Adaptation automatique du layout*
+
+### Version mobile - Petits écrans  
+![Homepage mobile](screenshots/Minishop%20responsive%20small%20homepage.png)
+*Page d'accueil mobile - Interface optimisée pour smartphones*
+
+![Page produit mobile](screenshots/Minishop%20responsive%20small%20product%20page.png)
+*Page détail produit mobile - Navigation tactile optimisée*
 
 ### Backend (Node.js/Express)
 - ✅ API REST complète
@@ -250,8 +267,8 @@ minishop/
 - **Authentification** : Connexion/inscription avec JWT et validation
 - **Paiement** : Intégration Stripe Checkout avec gestion d'erreurs
 - **Navigation** : Header adaptatif avec état de connexion
-- **Responsive** : Optimisé pour mobile et desktop
-- **UX moderne** : Design violet/blanc avec animations fluides
+- **Responsive Design** : Interface optimisée pour tous les écrans (mobile, tablette, desktop)
+- **UX moderne** : Design violet/blanc avec animations fluides et micro-interactions
 
 ## 🔧 Détails techniques
 

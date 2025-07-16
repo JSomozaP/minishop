@@ -16,9 +16,31 @@ Un projet de boutique en ligne complète avec backend Node.js/Express et fronten
 
 ## 🚀 Démarrage rapide
 
-### **Commande unique pour tout démarrer :**
+### **Méthode automatique (recommandée) :**
 ```bash
+# Cloner le projet
+git clone https://github.com/JSomozaP/minishop.git
+cd minishop
+
+# Démarrer tous les services automatiquement
+chmod +x *.sh
 ./start.sh
+```
+**✅ Le script démarre automatiquement :**
+- MySQL (Docker)
+- Base de données et utilisateur de test
+- Backend Node.js
+- Frontend Angular
+
+### **Méthode manuelle (plus de contrôle) :**
+```bash
+# Guide interactif étape par étape
+./start-simple.sh
+```
+
+### **Arrêt des services :**
+```bash
+./stop.sh
 ```
 
 ### **Accès à l'application :**
@@ -29,6 +51,20 @@ Un projet de boutique en ligne complète avec backend Node.js/Express et fronten
 ### **Compte de démonstration :**
 - **Email :** demo@minishop.com
 - **Mot de passe :** demo123
+
+## 🆕 **Dernières améliorations**
+
+### ✅ **Scripts de démarrage automatisés**
+- **`./start.sh`** : Démarrage automatique complet en une commande
+- **`./start-simple.sh`** : Guide interactif pour démarrage manuel
+- **`./stop.sh`** : Arrêt propre de tous les services
+- **Gestion robuste** : Nettoyage automatique, gestion d'erreurs, timing optimisé
+
+### ✅ **Configuration unifiée**
+- **Ports cohérents** : MySQL (3307), Backend (3000), Frontend (4200)
+- **Base de données** : Configuration automatique avec utilisateur de test
+- **Docker intégré** : MySQL containerisé avec données persistantes
+- **Variables d'environnement** : Configuration centralisée dans `.env`
 
 ## 🛍️ **Fonctionnalités démontrées**
 
@@ -96,7 +132,7 @@ Un projet de boutique en ligne complète avec backend Node.js/Express et fronten
 
 ## 🛠️ Installation et Démarrage
 
-### **Méthode rapide (recommandée) :**
+### **Méthode automatique (recommandée) :**
 ```bash
 # Cloner le projet
 git clone https://github.com/JSomozaP/minishop.git
@@ -107,31 +143,26 @@ chmod +x *.sh
 ./start.sh
 ```
 
-### **Méthode manuelle :**
-
-#### 1. Base de données MySQL
+### **Méthode manuelle simplifiée :**
 ```bash
-# Démarrer MySQL avec Docker
-docker run -d --name bdd -p 3307:3306 \
-  -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=mini_shop \
-  mysql:8.0
+# Script guide interactif
+./start-simple.sh
+
+# OU étapes manuelles :
+./docker-mysql.sh                                    # 1. MySQL
+sleep 20                                              # 2. Attendre 20s
+cd backend && node scripts/init-db.js && cd ..       # 3. Initialiser DB
+cd backend && node scripts/create-test-user.js && cd .. # 4. Créer utilisateur test
+# Puis dans 2 terminaux séparés :
+cd backend && npm run dev                             # 5. Backend
+cd frontend/minishop-app && npm start                # 6. Frontend
 ```
 
-#### 2. Backend
-```bash
-cd backend
-npm install
-npm run init-db
-npm run dev
-```
-
-#### 3. Frontend
-```bash
-cd frontend/minishop-app
-npm install
-npm start
-```
+### **Scripts disponibles :**
+- `./start.sh` - Démarrage automatique complet
+- `./start-simple.sh` - Guide interactif étape par étape  
+- `./stop.sh` - Arrêt de tous les services
+- `./docker-mysql.sh` - Démarrage MySQL uniquement
 
 ### **Accès à l'application :**
 - **Frontend :** http://localhost:4200

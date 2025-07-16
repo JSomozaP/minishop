@@ -38,12 +38,14 @@ if ! docker info &> /dev/null; then
     exit 1
 fi
 
-# Démarrer MySQL
+# Démarrer MySQL avec la même méthode que start-simple.sh
 print_info "Démarrage de la base de données MySQL..."
 docker rm -f bdd 2>/dev/null || true
+
+# Utiliser exactement la même commande que docker-mysql.sh qui fonctionne
 docker run -d --name bdd -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=mini_shop \
+  -e MYSQL_DATABASE=minishop \
   mysql:8.0
 
 if [ $? -eq 0 ]; then
@@ -53,9 +55,13 @@ else
     exit 1
 fi
 
-# Attendre que MySQL soit prêt
-print_info "Attente de la disponibilité de MySQL..."
-sleep 10
+# Attendre 20 secondes (délai qui fonctionne dans start-simple.sh)
+print_info "Attente de la disponibilité de MySQL (20 secondes)..."
+sleep 20
+
+# Créer la base minishop si elle n'existe pas
+docker exec bdd mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS minishop;" 2>/dev/null || true
+print_status "MySQL est prêt!"
 
 # Installer les dépendances backend si nécessaire
 if [ ! -d "backend/node_modules" ]; then
@@ -72,33 +78,72 @@ fi
 # Installer les dépendances frontend si nécessaire
 if [ ! -d "frontend/minishop-app/node_modules" ]; then
     print_info "Installation des dépendances frontend..."
-    cd frontend/minishop-app && npm install && cd ../..
-    if [ $? -eq 0 ]; then
-        print_status "Dépendances frontend installées"
+    if cd frontend/minishop-app; then
+        npm install && cd ../..
+        if [ $? -eq 0 ]; then
+            print_status "Dépendances frontend installées"
+        else
+            print_error "Erreur lors de l'installation des dépendances frontend"
+            exit 1
+        fi
     else
-        print_error "Erreur lors de l'installation des dépendances frontend"
+        print_error "Impossible d'accéder au répertoire frontend/minishop-app"
         exit 1
     fi
 fi
 
 # Initialiser la base de données
 print_info "Initialisation de la base de données..."
-cd backend && npm run init-db && cd ..
+if cd backend; then
+    # Attendre encore un peu pour être sûr que MySQL est complètement prêt
+    sleep 3
+    
+    # Initialiser les tables et données
+    if node scripts/init-db.js; then
+        print_status "Tables et données initialisées"
+    else
+        print_warning "Erreur lors de l'initialisation - continuons quand même"
+    fi
+    
+    # Créer l'utilisateur de test
+    if node scripts/create-test-user.js; then
+        print_status "Utilisateur de test créé"
+    else
+        print_warning "Erreur lors de la création de l'utilisateur de test"
+    fi
+    
+    cd ..
+else
+    print_error "Impossible d'accéder au répertoire backend"
+    exit 1
+fi
 
 # Démarrer le backend en arrière-plan
 print_info "Démarrage du serveur backend..."
-cd backend && npm run dev &
-BACKEND_PID=$!
-cd ..
+if cd backend; then
+    npm run dev &
+    BACKEND_PID=$!
+    cd ..
+    print_status "Backend démarré (PID: $BACKEND_PID)"
+else
+    print_error "Impossible d'accéder au répertoire backend"
+    exit 1
+fi
 
 # Attendre un peu pour que le backend démarre
-sleep 3
+sleep 5
 
 # Démarrer le frontend
 print_info "Démarrage du serveur frontend..."
-cd frontend/minishop-app && npm start &
-FRONTEND_PID=$!
-cd ../..
+if cd frontend/minishop-app; then
+    npm start &
+    FRONTEND_PID=$!
+    cd ../..
+    print_status "Frontend démarré (PID: $FRONTEND_PID)"
+else
+    print_error "Impossible d'accéder au répertoire frontend/minishop-app"
+    exit 1
+fi
 
 # Messages d'information
 echo ""

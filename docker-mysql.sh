@@ -10,9 +10,9 @@ docker rm bdd 2>/dev/null || true
 # Démarrer MySQL avec Docker
 docker run -d \
   --name bdd \
-  -p 3306:3306 \
+  -p 3307:3306 \
   -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=mini_shop \
+  -e MYSQL_DATABASE=minishop \
   mysql:8.0
 
 echo "⏳ Attente du démarrage de MySQL..."
